@@ -1,9 +1,91 @@
 import json
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import List, TypedDict
+
+VALID_STATUSES = ("todo", "in-progress", "done")
+DESC_WIDTH = 24
 
 
-def load_tasks(path: str) -> List[Dict[str, Union[str, bool]]]:
+class Task(TypedDict):
+    """
+    Typed dictionary representing a task.
+    """
+
+    id: int
+    description: str
+    status: str
+    createdAt: str
+    updatedAt: str
+
+
+def add_task(task_description: str, task_list: List[Task]) -> List[Task]:
+    """
+    Add a new task to the in-memory list.
+
+    Parameters
+    ----------
+    task_description: str
+        Name of the task to add.
+    task_list: List[Task]
+        The list of tasks loaded from a JSON file into memory.
+
+    Returns
+    -------
+    List[Task]
+        Updated task list.
+
+    Raises
+    ------
+    RuntimeError
+        If the task could not be added.
+    """
+    new_task: Task = {
+        "id": task_list[len(task_list) - 1]["id"] + 1,
+        "description": task_description,
+        "status": "todo",
+        "createdAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "updatedAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    try:
+        task_list.append(new_task)
+    except Exception as e:
+        raise RuntimeError(f"Failed to add task '{task_description}'") from e
+
+    return task_list
+
+
+
+
+def remove_task(task_id: int, task_list: List[Task]) -> List[Task]:
+    """
+    Delete a task with the given id from the in-memory task list.
+
+    Parameters
+    ----------
+    task_list : List[Task]
+        The list of tasks to be written into the JSON file.
+    task_id: int
+        ID of the task to delete.
+
+    Returns
+    -------
+    List[Task]
+        Updated task list.
+
+    Raises
+    ------
+    IndexError
+        If the index is out of range.
+    """
+    idx = task_id - 1
+    if 0 <= idx < len(task_list):
+        del task_list[idx]
+        return task_list
+    raise IndexError(f"There is no task with ID {task_id}")
+
+
+def load_tasks(path: str) -> List[Task]:
     """
     Load tasks from a JSON file. If the file does not exist, it will
     be created with an empty list.
