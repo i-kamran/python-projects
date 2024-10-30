@@ -55,6 +55,79 @@ def add_task(task_description: str, task_list: List[Task]) -> List[Task]:
     return task_list
 
 
+def update_task(
+    task_id: int, task_description: str, task_list: List[Task]
+) -> List[Task]:
+    """
+    Update a task with the given ID.
+
+    Parameters
+    ----------
+    task_id: int
+        Id of the task to update.
+    task_description: str
+        New name for the task
+    task_list: List[Task]
+        The list of tasks loaded from a JSON file into memory.
+
+    Returns
+    -------
+    List[Task]
+        Updated task list.
+
+    Raises
+    ------
+    IndexError
+        If the index is out of range.
+    """
+    idx = task_id - 1
+    if 0 <= idx < len(task_list):
+        task_list[idx]["description"] = task_description
+        task_list[idx]["updatedAt"] = datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+        return task_list
+    raise IndexError(f"There is no task with ID {task_id}")
+
+
+def update_status(
+    task_id: int, status: str, task_list: List[Task]
+) -> List[Task]:
+    """
+    Update the status of a task in the in-memory task list.
+
+    Parameters
+    ----------
+    ID : int
+        ID of the task to update.
+    status : Status
+        New task status ("todo", "in-progress", or "done").
+    task_list : List[Task]
+        The list of tasks in memory.
+
+    Returns
+    -------
+    List[Task]
+        Updated task list.
+
+    Raises
+    ------
+    IndexError
+        If the task ID is out of range.
+    ValueError
+        If the given status is not valid.
+    """
+    idx = task_id - 1
+    if not 0 <= idx < len(task_list):
+        raise IndexError(f"There is no task with ID {task_id}")
+    if status not in VALID_STATUSES:
+        raise ValueError(
+            f"Invalid status '{status}'. Must be one of {VALID_STATUSES}"
+        )
+    task_list[idx]["status"] = status
+    task_list[idx]["updatedAt"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return task_list
+
 
 
 def remove_task(task_id: int, task_list: List[Task]) -> List[Task]:
