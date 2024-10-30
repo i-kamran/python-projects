@@ -129,6 +129,45 @@ def update_status(
     return task_list
 
 
+def list_tasks(task_list: List[Task], status: str = "all") -> None:
+    """
+    Lists tasks based on their status. By default lists all tasks.
+
+    Parameters
+    ----------
+    task_list : List[Task]
+        The list of tasks in memory.
+    status : str, optional
+        Filter tasks by their status (default is "all").
+        Expected values: "all", "todo", "in-progress", "done".
+       Returns
+    -------
+    None
+    """
+    if len(task_list) == 0:
+        print("There are no tasks.")
+        return
+
+    if status not in ("all", *VALID_STATUSES):
+        raise ValueError(
+            f"Invalid status {status}. Must be one of {VALID_STATUSES} or all"
+        )
+
+    # Header row
+    print(
+        f"id  | {'description':<{DESC_WIDTH}} | {'updated at':<19} | status",
+    )
+    # Separator row: match widths of each field + separators
+    print(
+        f"{'-' * 3} | " f"{'-' * DESC_WIDTH} | " f"{'-' * 19} | " f"{'-' * 6}"
+    )
+    for task_id, task in enumerate(task_list, start=1):
+        if status in ("all", task["status"]):
+            print(
+                f"{task_id:03} | {format_desc(task['description'])} | "
+                f"{task['updatedAt']} | {colorize_status(task['status'])}"
+            )
+
 
 def remove_task(task_id: int, task_list: List[Task]) -> List[Task]:
     """
@@ -215,4 +254,5 @@ def write_tasks_to_json(task_list: List[Task], path: str) -> None:
             json.dump(task_list, file, indent=2)
     except Exception as e:
         raise RuntimeError(f"Failed to write tasks to {path}") from e
+
 
