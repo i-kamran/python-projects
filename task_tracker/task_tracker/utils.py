@@ -256,3 +256,46 @@ def write_tasks_to_json(task_list: List[Task], path: str) -> None:
         raise RuntimeError(f"Failed to write tasks to {path}") from e
 
 
+def colorize_status(status: str) -> str:
+    """
+    Colorizes a string based on status.
+
+    Parameters
+    ---------
+    status: str
+        Status string
+
+    Returns
+    -------
+    str
+        Returns colorized string.
+    """
+    reset = "\033[0m"
+    green = "\033[92m"
+    yellow = "\033[93m"
+    red = "\033[91m"
+
+    if status == "done":
+        return f"{green}{status}{reset}"
+    if status == "in-progress":
+        return f"{yellow}{status}{reset}"
+    return f"{red}{status}{reset}"
+
+
+def format_desc(desc: str) -> str:
+    """
+    Format a string to a fixed width by truncating or padding.
+
+    Parameters
+    ----------
+    desc: str
+        A string to format.
+
+    Returns
+    -------
+    str
+        Formatted string.
+    """
+    if len(desc) > DESC_WIDTH:
+        return desc[: DESC_WIDTH - 3] + "..."
+    return f"{desc:<{DESC_WIDTH}}"
