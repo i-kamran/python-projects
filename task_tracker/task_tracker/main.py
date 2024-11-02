@@ -81,3 +81,82 @@ def add(desc: str) -> None:
 
     tasks = utils.add_task(desc, utils.load_tasks(PATH))
     utils.write_tasks_to_json(tasks, PATH)
+
+
+def update(task_id: int, desc: str) -> None:
+    """
+    Update description of the task with the given ID.
+
+    Parameters
+    ----------
+    task_id: int
+        ID of the task
+    desc: str
+        Description of the task
+
+    Returns
+    -------
+    None
+    """
+
+    tasks = utils.update_task(task_id, desc, utils.load_tasks(PATH))
+    utils.write_tasks_to_json(tasks, PATH)
+
+
+def delete(task_id: int) -> None:
+    """
+    Delete a task with the given ID.
+
+    Parameters
+    ----------
+    task_id: int
+        ID of the task to delete
+
+    Returns
+    -------
+    None
+    """
+    tasks = utils.remove_task(task_id, utils.load_tasks(PATH))
+    utils.write_tasks_to_json(tasks, PATH)
+
+
+def mark_status(task_id: int, status: str) -> None:
+    """
+    Update status of the task with the given ID.
+
+    Parameters
+    ----------
+    task_id: int
+        ID of the task
+    desc: str
+        Status of the task
+
+    Returns
+    -------
+    None
+    """
+
+    tasks = utils.update_status(task_id, status, utils.load_tasks(PATH))
+    utils.write_tasks_to_json(tasks, PATH)
+
+
+def tracker_list(status: str = "all") -> None:
+    """
+    List tasks based on status.
+
+    Parameters
+    ----------
+    status : str, optional
+        The status to filter tasks by. If not provided, all tasks are listed.
+
+    Returns
+    -------
+    None
+    """
+
+    tasks = utils.load_tasks(PATH)
+    utils.list_tasks(tasks, status)
+
+
+if __name__ == "__main__":
+    main()
