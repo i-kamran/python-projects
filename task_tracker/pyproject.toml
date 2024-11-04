@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "task-tracker"
+version = "0.1.0"
+description = "A lightweight CLI task tracker"
+authors = [
+  { name="Your Name", email="you@example.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = [
+  "click>=8.0"  # or argparse if you don’t want deps
+]
+
+[project.scripts]
+task = "task_tracker.cli:main"
+
