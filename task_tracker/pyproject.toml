@@ -17,5 +17,5 @@ dependencies = [
 ]
 
 [project.scripts]
-task = "task_tracker.cli:main"
+task = "task_tracker.main:main"
 
