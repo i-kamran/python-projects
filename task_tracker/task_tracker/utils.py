@@ -40,8 +40,9 @@ def add_task(task_description: str, task_list: List[Task]) -> List[Task]:
     RuntimeError
         If the task could not be added.
     """
+    new_id = int(task_list[-1]["id"]) + 1 if task_list else 1
     new_task: Task = {
-        "id": task_list[len(task_list) - 1]["id"] + 1,
+        "id": new_id,
         "description": task_description,
         "status": "todo",
         "createdAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
