@@ -7,7 +7,7 @@ name = "task-tracker"
 version = "0.1.0"
 description = "A lightweight CLI task tracker"
 authors = [
-  { name="Your Name", email="you@example.com" }
+  { name="Kamran", email="ibragimovkmrn@gmail.com" }
 ]
 readme = "README.md"
 license = { text = "MIT" }
